@@ -1,40 +1,59 @@
 {
   "name": "iisexpress-proxy",
-  "version": "1.4.9",
-  "description": "A simple local proxy useful for accessing IIS Express from remote machines.",
-  "preferGlobal": true,
-  "main": "index.js",
-  "bin": {
-    "iisexpress-proxy": "./index.js"
-  },
-  "keywords": [
-    "iisexpress",
-    "proxy",
-    "remote",
-    "iis",
-    "visualstudio",
-    "vs"
-  ],
-  "author": {
-    "name": "Ionut-Cristian Florescu",
-    "email": "ionut.florescu@gmail.com",
-    "url": "https://github.com/icflorescu"
-  },
-  "maintainers": [
-    {
-      "name": "Alan Colon",
-      "email": "alan.colon@cybercoders.com"
-    }
-  ],
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/icflorescu/iisexpress-proxy.git"
-  },
-  "bugs": {
-    "url": "https://github.com/icflorescu/iisexpress-proxy/issues"
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "start": "node index.js 46899 to 8080"
   },
   "dependencies": {
-    "http-proxy": "^1.17.0"
-  }
+    "core-js": "^2.6.5",
+    "jsonfile": "^5.0.0",
+    "moment": "^2.24.0",
+    "momentjs": "^2.0.0",
+    "vue": "^2.6.10",
+    "vue-json-viewer": "^2.2.1",
+    "vuetify": "^2.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.9.0",
+    "@vue/cli-plugin-eslint": "^3.9.0",
+    "@vue/cli-service": "^3.9.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "json-loader": "^0.5.7",
+    "lodash": "^4.17.15",
+    "sass": "^1.17.4",
+    "sass-loader": "^7.1.0",
+    "uuid": "^3.3.2",
+    "vue-cli-plugin-vuetify": "^0.6.1",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

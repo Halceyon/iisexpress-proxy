@@ -3,7 +3,12 @@
 var os = require('os'),
     http = require('http'),
     httpProxy = require('http-proxy'),
-    pkg = require('./package');
+    jsonfile = require('jsonfile'),
+    pkg = require('./package'),
+    _ = require('lodash'),
+    uuidv1 = require('uuid/v1');
+
+const jsonReq = 'web-data.json';
 
 var exit = function() {
   var bin = Object.keys(pkg.bin)[0];
@@ -52,6 +57,14 @@ Object.keys(interfaces).forEach(function(name) {
   });
 });
 
+var appendToFile = (obj, file) => {
+  var arr = jsonfile.readFileSync(file);
+  arr.push(obj);
+  jsonfile.writeFile(file, arr, function (err) {
+    if (err) console.error(err)
+  })
+}
+
 var proxy = new httpProxy.createProxyServer({
   target: protocolPrefix + host + ':' + port,
   secure: false,
@@ -61,6 +74,33 @@ var proxy = new httpProxy.createProxyServer({
 }).on('error', function (err) {
   console.log(err);
   console.log('Listening... [press Control-C to exit]');
+}).on('proxyRes', function (proxyRes, req, res) {
+    console.log('Response headers:', JSON.stringify(proxyRes.headers, true, 2));
+    console.log(req.headers['proxy-id']);
+    var arr = jsonfile.readFileSync(jsonReq);
+    const originalReq = _.find(arr, a => a.id === req.headers['proxy-id']);
+
+    var body = new Buffer('');
+    proxyRes.on('data', function (data) {
+        body = Buffer.concat([body, data]);
+    });
+    proxyRes.on('end', function () {
+        body = body.toString();
+        originalReq.resHeaders = proxyRes.headers;
+        originalReq.resBody = body;
+        jsonfile.writeFile(jsonReq, arr, function (err) {
+          if (err) console.error(err)
+        })
+    });
+}).on('proxyReq', function (proxyReq, req, res) {
+  req.headers['proxy-id'] = uuidv1();
+  appendToFile({
+    id: req.headers['proxy-id'],
+    method: `${proxyReq.method}:${proxyReq.path}`,
+    created: new Date(),
+    reqHeaders: req.headers,
+    reqBody: '',
+  }, jsonReq);
 });
 var proxyServer = http.createServer(function (req, res) {
   proxy.web(req, res);
