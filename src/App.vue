@@ -29,8 +29,5 @@ export default {
   components: {
     ListRequests,
   },
-  data: () => ({
-    //
-  }),
 };
 </script>

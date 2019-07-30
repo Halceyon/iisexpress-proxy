@@ -3,13 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 4000",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "node index.js 46899 to 8080"
+    "proxy": "node index-proxy.js 46899 to 8080",
+    "start": "node index.js 46899 to 8080",
+    "start-old": "concurrently --kill-others \"node index.js 46899 to 8080\" \"vue-cli-service serve\""
   },
   "dependencies": {
+    "concurrently": "^4.1.1",
+    "connect-history-api-fallback": "^1.6.0",
     "core-js": "^2.6.5",
+    "express": "^4.17.1",
+    "isomorphic-ws": "^4.0.1",
     "jsonfile": "^5.0.0",
     "moment": "^2.24.0",
     "momentjs": "^2.0.0",
@@ -31,7 +37,8 @@
     "uuid": "^3.3.2",
     "vue-cli-plugin-vuetify": "^0.6.1",
     "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.2.2"
+    "vuetify-loader": "^1.2.2",
+    "ws": "^7.1.1"
   },
   "eslintConfig": {
     "root": true,
