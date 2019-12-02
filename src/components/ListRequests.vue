@@ -9,7 +9,6 @@
             color="light-blue"
             dark
           >
-            <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
             <v-toolbar-title>Requests</v-toolbar-title>
 
@@ -21,7 +20,7 @@
           <v-list-item-group color="primary" v-model="selectedRequest">
             <v-list two-line subheader>
               <v-list-item
-                v-for="(req, index) in proxyData" :key="index"
+                v-for="(req, index) in items" :key="index"
               >
                 <v-list-item-content>
                   <v-list-item-title v-text="`${req.method}: ${req.url}`"></v-list-item-title>
@@ -43,7 +42,6 @@
             color="light-blue"
             dark
           >
-            <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
 
             <v-toolbar-title>Response</v-toolbar-title>
@@ -67,7 +65,7 @@
 
 <script>
 /* eslint-disable no-console */
-import _ from 'lodash';
+import { find, sortBy, map } from 'lodash';
 import moment from 'moment';
 const WebSocket = require('isomorphic-ws');
 
@@ -82,10 +80,24 @@ export default {
     selectedResponse() {
       if (this.selected) {
         const req = this.proxyData[this.selectedRequest];
-        const res = _.find(this.proxyData, p => p.id === req.id && p.type === 'response');
+        const res = find(this.proxyData, p => p.id === req.id && p.type === 'response');
         return res;
       }
       return null;
+    },
+    items() {
+      return sortBy(
+        map(this.proxyData, d => {
+          return {
+            method: d.method,
+            url: d.url,
+            created: this.formatDate(d.created),
+            originalDate: new Date(d.created).getTime(),
+          };
+        }),
+        d => {
+          return d.originalDate;
+        }).reverse();
     },
   },
   data: () => ({
