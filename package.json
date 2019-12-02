@@ -6,8 +6,8 @@
     "serve": "vue-cli-service serve --port 4000",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "proxy": "node index-proxy.js 46899 to 8080",
-    "start": "node index.js 46899 to 8080",
+    "proxy": "node index-proxy.js",
+    "start": "node index.js",
     "start-old": "concurrently --kill-others \"node index.js 46899 to 8080\" \"vue-cli-service serve\""
   },
   "dependencies": {

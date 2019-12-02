@@ -15,6 +15,8 @@
 
             <v-spacer></v-spacer>
 
+             <v-icon @click="clear">mdi-delete</v-icon>
+
           </v-toolbar>
           <v-list-item-group color="primary" v-model="selectedRequest">
             <v-list two-line subheader>
@@ -43,10 +45,10 @@
           >
             <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
+
             <v-toolbar-title>Response</v-toolbar-title>
 
             <v-spacer></v-spacer>
-
           </v-toolbar>
           <v-card-text>
             <json-viewer
@@ -71,12 +73,6 @@ const WebSocket = require('isomorphic-ws');
 
 export default {
   computed: {
-    requests() {
-      return _.chain(this.proxyData)
-        .filter(c => c.type === 'request')
-        .map(c => c.message.method)
-        .value();
-    },
     selected() {
       if (this.selectedRequest) {
         return this.proxyData[this.selectedRequest];
@@ -91,16 +87,6 @@ export default {
       }
       return null;
     },
-    webData() {
-      return _.chain([{
-        created: new Date(),
-      }])
-        .sortBy('created')
-        .reverse()
-        .take(50)
-        .value()
-        .reverse();
-    },
   },
   data: () => ({
     proxyData: [],
@@ -109,7 +95,10 @@ export default {
   methods: {
     formatDate(dt) {
       return moment(dt).fromNow();
-    }
+    },
+    clear() {
+      this.proxyData = [];
+    },
   },
   created () {
     const ws = new WebSocket('ws://localhost:8000');
