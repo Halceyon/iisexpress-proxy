@@ -31,7 +31,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "json-loader": "^0.5.7",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "sass": "^1.17.4",
     "sass-loader": "^7.1.0",
     "uuid": "^3.3.2",
